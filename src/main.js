@@ -2,15 +2,10 @@
 import iziToast from "izitoast";
 // Додатковий імпорт стилів
 import "izitoast/dist/css/iziToast.min.css";
-// Описаний у документації
-import SimpleLightbox from "simplelightbox";
-// Додатковий імпорт стилів
-import "simplelightbox/dist/simple-lightbox.min.css";
 
 import  './js/pixabay-api';
 import './js/render-functions';
-import { makeGalleryItem } from './js/render-functions';
-import { fetchImg } from './js/pixabay-api';
+import { onFormSubmit, onLoadClick } from './js/pixabay-api';
 
 export const refs = {
     userForm: document.querySelector('.user-form'),
@@ -19,34 +14,27 @@ export const refs = {
     galleryList: document.querySelector('.gallery'),
     container: document.querySelector('.container'),
     loader: document.querySelector('.loader'),
+    btnLoad: document.querySelector('.btn-load'),
   };
 
   refs.userForm.addEventListener('submit', onFormSubmit);
+  refs.btnLoad.addEventListener('click', onLoadClick);
 
-  function onFormSubmit(event) {
-    event.preventDefault();
-    loaderOn();
-    refs.galleryList.innerHTML = '';
-    const userSearch = event.currentTarget.elements.input.value.trim();
-  
-    fetchImg(userSearch).then(makeGalleryItem).catch(onError).finally(loaderOff);
-  
-    refs.userForm.reset();
-  }
-
-  function loaderOn() {
+  export function loaderOn() {
     refs.loader.classList.remove('hidden');
   }
   
-  function loaderOff() {
+  export function loaderOff() {
     refs.loader.classList.add('hidden');
   }
 
-  function onError() {
-    const MESSAGE = 'Sorry, there are no images matching your search query. Please try again!';
-
+  export function onError(message) {
     iziToast.error({
-    message: MESSAGE,
+    message: message,
     position: 'topRight',
     });
 }
+
+      export const LIMIT = "We're sorry, but you've reached the end of search results.";
+      export const CORRECT = 'Please enter correct information.';
+      export const MESSAGE = 'Sorry, there are no images matching your search query. Please try again!';

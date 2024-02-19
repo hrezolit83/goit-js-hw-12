@@ -1,30 +1,31 @@
-// Описаний у документації
+
 import SimpleLightbox from "simplelightbox";
-// Додатковий імпорт стилів
-
-// Описаний у документації
-import iziToast from "izitoast";
-// Додатковий імпорт стилів
-import "izitoast/dist/css/iziToast.min.css";
-
 import "simplelightbox/dist/simple-lightbox.min.css";
 
-import { refs } from '../main';
+import { refs, onError, MESSAGE } from '../main';
+import { perPage } from './pixabay-api';
+
+
+export let totalHits;
+export let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+});;
 
 export  function makeGalleryItem(res) {
     const result = res.hits.map(makeMarcup).join('');
-  
-    if (res.hits.length) {
-      refs.galleryList.innerHTML = result;
-      let lightbox = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionPosition: 'bottom',
-        captionDelay: 250,
-      });
-      lightbox.refresh();
-    } else {
-      onError();
+    totalHits = res.totalHits
+      if (totalHits > perPage) {
+        refs.btnLoad.classList.remove('hidden');
     }
+      if (res.hits.length) {
+        refs.galleryList.insertAdjacentHTML('beforeend', result);
+      } else {
+        onError(MESSAGE);
+      }
+
+      lightbox.refresh();
   }
 
   function makeMarcup(image) {

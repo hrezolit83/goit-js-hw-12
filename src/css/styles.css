@@ -156,3 +156,7 @@ span {
 .hidden {
   display: none;
 }
+
+.btn-load {
+  margin: 20px auto;
+}
