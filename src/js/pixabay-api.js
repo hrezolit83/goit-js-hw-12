@@ -1,6 +1,6 @@
 import axios from "axios";
 import "izitoast/dist/css/iziToast.min.css";
-import { refs, onError, LIMIT, loaderOff, loaderOn } from "../main";
+import { refs, onError, LIMIT, CORRECT, loaderOff, loaderOn } from "../main";
 import { makeGalleryItem, totalHits, lightbox } from './render-functions';
 import { MESSAGE } from "../main";
 
@@ -48,6 +48,7 @@ export async function onFormSubmit(event) {
     } else {
       refs.userForm.elements.input.value = '';
       onError(CORRECT);
+      loaderOff();
     }
   }
 
